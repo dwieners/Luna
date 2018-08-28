@@ -1,6 +1,11 @@
 package de.dominikwieners.luna.viewmodel
 
 import android.arch.lifecycle.ViewModel
+import android.util.Log
+import de.dominikwieners.luna.repository.PictureRepository
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 
 
 class StartViewModel : ViewModel(){
@@ -30,7 +35,26 @@ class StartViewModel : ViewModel(){
 
     //Only use Application Context
 
-    //private val pictureListObservable:LiveData<List<UnsplashPictureResponse>>
+
+    val client by lazy {
+        PictureRepository.create()
+    }
+
+    var disposable: Disposable? = null
+
+
+    fun fetchPictures() {
+        disposable = client.getPictures()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        { result -> Log.v("Picture", result[0].id) },
+                        { error -> Log.e("ERROR", error.message) })
+    }
+
+
+
+
 
 
 

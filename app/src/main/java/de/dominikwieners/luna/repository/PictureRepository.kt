@@ -4,14 +4,10 @@ import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 object PictureRepository {
-
-    private val client: OkHttpClient
-    private val retrofit: Retrofit
-    private val unsplashService: UnsplashService
 
 
     class LoggingInterceptor : Interceptor {
@@ -26,16 +22,15 @@ object PictureRepository {
     }
 
 
-    init {
-        client = OkHttpClient.Builder().addInterceptor(LoggingInterceptor()).build()
-        retrofit = Retrofit.Builder()
+    fun create(): UnsplashService {
+        val client = OkHttpClient.Builder().addInterceptor(LoggingInterceptor()).build()
+        val retrofit = Retrofit.Builder()
                 .baseUrl("https://api.unsplash.com/")
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(MoshiConverterFactory.create())
                 .client(client)
                 .build()
-        unsplashService = retrofit.create(UnsplashService::class.java)
+        return retrofit.create(UnsplashService::class.java)
     }
-
 
 }

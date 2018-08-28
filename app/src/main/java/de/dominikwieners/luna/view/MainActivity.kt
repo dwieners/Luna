@@ -55,6 +55,7 @@ class MainActivity : AppCompatActivity() {
         startViewModel = ViewModelProviders.of(this).get(StartViewModel::class.java)
         binding.setLifecycleOwner(this)
         setContentView(binding.root)
+        startViewModel.fetchPictures()
     }
 
 
