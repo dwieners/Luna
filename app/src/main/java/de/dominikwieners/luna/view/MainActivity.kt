@@ -1,12 +1,17 @@
 package de.dominikwieners.luna.view
 
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.widget.Toast
+import de.dominikwieners.luna.R
 import de.dominikwieners.luna.databinding.ActivityMainBinding
+import de.dominikwieners.luna.model.UnsplashPictureResponse
 import de.dominikwieners.luna.viewmodel.StartViewModel
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(){
 
     // View (Activity/Fragment/XML)
     //--------------------------------
@@ -44,19 +49,42 @@ class MainActivity : AppCompatActivity() {
     //
 
 
-
-    private lateinit var binding: ActivityMainBinding
     private lateinit var startViewModel: StartViewModel
-
+    private lateinit var binding:ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)!!
-        startViewModel = ViewModelProviders.of(this).get(StartViewModel::class.java)
-        binding.setLifecycleOwner(this)
-        setContentView(binding.root)
-        startViewModel.fetchPictures()
+        initViewModel()
+        initBinding()
+        loadData()
     }
+
+    private fun initViewModel(){
+        startViewModel = ViewModelProviders.of(this).get(StartViewModel::class.java)
+    }
+
+    private fun initBinding(){
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding.viewmodel = startViewModel
+        binding.setLifecycleOwner(this)
+    }
+
+    private fun loadData(){
+        startViewModel.fetchPictures()
+        startViewModel.resultdata.observe(this, Observer {
+            Toast.makeText(this, it!![0].color, Toast.LENGTH_LONG).show()
+        })
+    }
+
+
+
+
+
+
+
+
+
+
 
 
 }

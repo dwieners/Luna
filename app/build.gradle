@@ -27,7 +27,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
 
@@ -45,11 +45,21 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-moshi:2.0.0'
     implementation 'com.squareup.okhttp3:okhttp:3.11.0'
 
+    //RecyclerView
+    implementation 'com.android.support:recyclerview-v7:27.1.1'
+
     //Unit testing
+    implementation 'com.android.support:support-v4:27.1.1'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
 
     //UI testing
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
+    //Navigation
+    def nav_version = "1.0.0-alpha05"
+
+    implementation "android.arch.navigation:navigation-fragment:$nav_version" // use -ktx for Kotlin
+    implementation "android.arch.navigation:navigation-ui:$nav_version" // use -ktx for Kotli
 
 }

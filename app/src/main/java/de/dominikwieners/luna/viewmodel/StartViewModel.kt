@@ -1,11 +1,23 @@
 package de.dominikwieners.luna.viewmodel
 
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.util.Log
+import android.widget.Toast
+import de.dominikwieners.luna.model.UnsplashPictureResponse
 import de.dominikwieners.luna.repository.PictureRepository
+import de.dominikwieners.luna.repository.UnsplashService
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
+import org.reactivestreams.Subscriber
+import org.reactivestreams.Subscription
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class StartViewModel : ViewModel(){
@@ -36,21 +48,21 @@ class StartViewModel : ViewModel(){
     //Only use Application Context
 
 
+    var resultdata = MutableLiveData<List<UnsplashPictureResponse>>()
     val client by lazy {
         PictureRepository.create()
     }
 
-    var disposable: Disposable? = null
-
-
     fun fetchPictures() {
-        disposable = client.getPictures()
+      client.getPictures()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        { result -> Log.v("Picture", result[0].id) },
-                        { error -> Log.e("ERROR", error.message) })
+                        { result ->  resultdata.value = result},
+                        { error -> Log.v(StartViewModel::class.simpleName,error.message.toString())})
+
     }
+
 
 
 
@@ -63,3 +75,5 @@ class StartViewModel : ViewModel(){
 
 
 }
+
+
