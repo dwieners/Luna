@@ -1,5 +1,9 @@
 package de.dominikwieners.luna.model
 
+import android.databinding.BindingAdapter
+import android.widget.ImageView
+import com.bumptech.glide.Glide
+
 // Model (data provider)
 //--------------------------------
 // Retrofit
@@ -8,7 +12,8 @@ package de.dominikwieners.luna.model
 // Firebase
 
 
-class UnsplashPictureResponse(
+
+data class UnsplashPictureResponse(
         val id: String,
         val created_at: String,
         val updated_at: String,
@@ -16,30 +21,29 @@ class UnsplashPictureResponse(
         val heigth: Int,
         val color: String,
         val description: String,
-//        val urls : List<UnsplashUrlsResponse>,
-//        val links : List<UnsplashLinksResponse>,
+        val urls : UnsplashUrlsResponse,
+        val links : UnsplashLinksResponse,
         val sponsored: Boolean,
         val likes: Int,
-        val liked_by_user: Boolean
-//        val user: UnsplashUserResponse
+        val liked_by_user: Boolean,
+        val user: UnsplashUserResponse
 )
 
-/*
-class UnsplashUrlsResponse(
+data class UnsplashUrlsResponse(
         val raw : String,
         val full : String,
         val regular : String,
         val small : String
 )
 
-class UnsplashLinksResponse(
+data class UnsplashLinksResponse(
         val self : String,
         val html : String,
         val download : String,
         val download_location : String
 )
 
-class UnsplashUserResponse(
+data class UnsplashUserResponse(
         val id : String,
         val updated_at : String,
         val username : String,
@@ -57,7 +61,7 @@ class UnsplashUserResponse(
         val total_photos : Int
 )
 
-class UnsplashUserLinksResponse(
+data class UnsplashUserLinksResponse(
         val self : String,
         val html : String,
         val photos : String,
@@ -67,9 +71,8 @@ class UnsplashUserLinksResponse(
         val followers : String
 )
 
-class UnsplashUserProfileImage(
+data class UnsplashUserProfileImage(
         val small : String,
         val medium : String,
         val large : String
 )
-        */

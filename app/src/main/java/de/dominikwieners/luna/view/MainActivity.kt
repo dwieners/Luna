@@ -5,11 +5,15 @@ import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import android.widget.Adapter
 import android.widget.Toast
 import de.dominikwieners.luna.R
 import de.dominikwieners.luna.databinding.ActivityMainBinding
 import de.dominikwieners.luna.model.UnsplashPictureResponse
 import de.dominikwieners.luna.viewmodel.StartViewModel
+import kotlinx.android.synthetic.main.activity_main.view.*
 
 class MainActivity : AppCompatActivity(){
 
@@ -52,6 +56,9 @@ class MainActivity : AppCompatActivity(){
     private lateinit var startViewModel: StartViewModel
     private lateinit var binding:ActivityMainBinding
 
+    private lateinit var recycler:RecyclerView
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initViewModel()
@@ -69,12 +76,28 @@ class MainActivity : AppCompatActivity(){
         binding.setLifecycleOwner(this)
     }
 
+    private fun initRecycler(){
+        recycler = binding.root.rv_unsplash_posts
+        recycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+    }
+
+    private fun initRecyclerAdapter(list: List<UnsplashPictureResponse>){
+        recycler.adapter = PostAdapter(list)
+    }
+
     private fun loadData(){
         startViewModel.fetchPictures()
         startViewModel.resultdata.observe(this, Observer {
-            Toast.makeText(this, it!![0].color, Toast.LENGTH_LONG).show()
+            //Toast.makeText(this, it!![0].color, Toast.LENGTH_LONG).show()
+            initRecycler()
+            if (it != null) {
+                initRecyclerAdapter(it)
+            }
+
         })
     }
+
+
 
 
 
