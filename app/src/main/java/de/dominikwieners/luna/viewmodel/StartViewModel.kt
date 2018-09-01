@@ -1,25 +1,13 @@
 package de.dominikwieners.luna.viewmodel
 
-import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import android.databinding.Bindable
 import android.databinding.ObservableField
-import android.util.Log
-import android.widget.Toast
 import de.dominikwieners.luna.model.UnsplashPictureResponse
 import de.dominikwieners.luna.repository.PictureRepository
 import de.dominikwieners.luna.repository.UnsplashService
-import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
-import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
-import org.reactivestreams.Subscriber
-import org.reactivestreams.Subscription
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 
 class StartViewModel : ViewModel(){
@@ -61,7 +49,7 @@ class StartViewModel : ViewModel(){
 
     fun fetchPictures() {
 
-      client.getPictures()
+        client.getPictures(1, 5, UnsplashService.Order.ORDER_BY_OLDEST)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { isLoading.set(true) }
