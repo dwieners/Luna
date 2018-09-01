@@ -24,7 +24,6 @@ class PostViewHolder: RecyclerView.ViewHolder{
         return itemBinding
     }
 
-
 }
 
 class PostAdapter(private var postList: List<UnsplashPictureResponse>) : RecyclerView.Adapter<PostViewHolder>() {
@@ -45,6 +44,5 @@ class PostAdapter(private var postList: List<UnsplashPictureResponse>) : Recycle
         //Should be done width BindingAdapters
         Picasso.get().load(unsplashPictureResponse.urls.small).into(holder.getItemBinding().root.iv_unsplash)
     }
-
 
 }

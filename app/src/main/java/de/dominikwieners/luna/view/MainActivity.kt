@@ -92,13 +92,23 @@ class MainActivity : AppCompatActivity(){
 
     private fun loadData(){
         startViewModel.fetchPictures()
+        showloadDataError()
         startViewModel.resultdata.observe(this, Observer {
-            //Toast.makeText(this, it!![0].color, Toast.LENGTH_LONG).show()
-            initRecycler()
-            if (it != null) {
+            it?.let {
+                initRecycler()
                 initRecyclerAdapter(it)
+                startViewModel.isError.value = false
             }
+        })
+    }
 
+    private fun showloadDataError(){
+        startViewModel.isError.observe(this, Observer {
+            it?.let {
+                if(it) {
+                    Toast.makeText(this, "no Internet connection", Toast.LENGTH_LONG).show()
+                }
+            }
         })
     }
 

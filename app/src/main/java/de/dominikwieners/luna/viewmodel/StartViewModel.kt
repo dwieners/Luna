@@ -3,6 +3,8 @@ package de.dominikwieners.luna.viewmodel
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import android.databinding.Bindable
+import android.databinding.ObservableField
 import android.util.Log
 import android.widget.Toast
 import de.dominikwieners.luna.model.UnsplashPictureResponse
@@ -49,17 +51,24 @@ class StartViewModel : ViewModel(){
 
 
     var resultdata = MutableLiveData<List<UnsplashPictureResponse>>()
+    var isError  = MutableLiveData<Boolean>()
+
+    var isLoading:ObservableField<Boolean> = ObservableField()
+
     val client by lazy {
         PictureRepository.create()
     }
 
     fun fetchPictures() {
+
       client.getPictures()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { isLoading.set(true) }
+                .doOnTerminate { isLoading.set(false) }
                 .subscribe(
                         { result ->  resultdata.value = result},
-                        { error -> error})
+                        { error ->   isError.value = true})
 
     }
 
