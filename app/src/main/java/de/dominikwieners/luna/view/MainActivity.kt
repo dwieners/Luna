@@ -63,6 +63,7 @@ class MainActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         initViewModel()
         initBinding()
+        initToolbar()
         loadData()
     }
 
@@ -74,6 +75,10 @@ class MainActivity : AppCompatActivity(){
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.viewmodel = startViewModel
         binding.setLifecycleOwner(this)
+    }
+
+    private fun initToolbar(){
+        binding.toolbar.title = getString(R.string.app_name)
     }
 
     private fun initRecycler(){
@@ -96,18 +101,5 @@ class MainActivity : AppCompatActivity(){
 
         })
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }

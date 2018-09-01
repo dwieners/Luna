@@ -6,10 +6,11 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
-import com.bumptech.glide.Glide
+import com.squareup.picasso.Picasso
 import de.dominikwieners.luna.R
 import de.dominikwieners.luna.databinding.UnsplashPostItemBinding
 import de.dominikwieners.luna.model.UnsplashPictureResponse
+import kotlinx.android.synthetic.main.unsplash_post_item.view.*
 
 class PostViewHolder: RecyclerView.ViewHolder{
 
@@ -38,7 +39,11 @@ class PostAdapter(private var postList: List<UnsplashPictureResponse>) : Recycle
     }
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
-        holder.getItemBinding().picture = postList[position]
+        var unsplashPictureResponse = postList[position]
+        holder.getItemBinding().picture = unsplashPictureResponse
+
+        //Should be done width BindingAdapters
+        Picasso.get().load(unsplashPictureResponse.urls.small).into(holder.getItemBinding().root.iv_unsplash)
     }
 
 

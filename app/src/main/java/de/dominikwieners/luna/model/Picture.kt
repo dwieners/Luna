@@ -1,8 +1,10 @@
 package de.dominikwieners.luna.model
 
+import android.databinding.Bindable
 import android.databinding.BindingAdapter
 import android.widget.ImageView
-import com.bumptech.glide.Glide
+import com.squareup.picasso.Picasso
+
 
 // Model (data provider)
 //--------------------------------
@@ -10,8 +12,6 @@ import com.bumptech.glide.Glide
 // SQLite db
 // Realm db
 // Firebase
-
-
 
 data class UnsplashPictureResponse(
         val id: String,

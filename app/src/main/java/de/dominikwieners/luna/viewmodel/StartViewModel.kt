@@ -59,20 +59,9 @@ class StartViewModel : ViewModel(){
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         { result ->  resultdata.value = result},
-                        { error -> Log.v(StartViewModel::class.simpleName,error.message.toString())})
+                        { error -> error})
 
     }
-
-
-
-
-
-
-
-
-
-
-
 
 }
 

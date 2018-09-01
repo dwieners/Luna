@@ -11,7 +11,6 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 
 object PictureRepository {
 
-
     class LoggingInterceptor : Interceptor {
         override fun intercept(chain: Interceptor.Chain?): Response {
             val orignal = chain!!.request()
@@ -34,9 +33,5 @@ object PictureRepository {
                 .build()
         return retrofit.create(UnsplashService::class.java)
     }
-
-
-
-
 
 }
