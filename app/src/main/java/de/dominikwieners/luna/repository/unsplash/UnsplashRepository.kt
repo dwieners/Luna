@@ -1,4 +1,4 @@
-package de.dominikwieners.luna.repository
+package de.dominikwieners.luna.repository.unsplash
 
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -9,7 +9,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 
 
 
-object PictureRepository {
+object UnsplashRepository {
 
     class LoggingInterceptor : Interceptor {
         override fun intercept(chain: Interceptor.Chain?): Response {

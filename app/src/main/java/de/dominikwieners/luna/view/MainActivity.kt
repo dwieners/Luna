@@ -1,5 +1,6 @@
 package de.dominikwieners.luna.view
 
+import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
@@ -7,13 +8,24 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.widget.Adapter
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.widget.AbsListView
 import android.widget.Toast
+import de.dominikwieners.luna.Navigator
 import de.dominikwieners.luna.R
 import de.dominikwieners.luna.databinding.ActivityMainBinding
+import de.dominikwieners.luna.di.LunaApplication
 import de.dominikwieners.luna.model.UnsplashPictureResponse
-import de.dominikwieners.luna.viewmodel.StartViewModel
+import de.dominikwieners.luna.repository.unsplash.UnsplashService
+import de.dominikwieners.luna.viewmodel.UnsplashViewModel
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.view.*
+import javax.inject.Inject
+
+
+
 
 class MainActivity : AppCompatActivity(){
 
@@ -53,22 +65,58 @@ class MainActivity : AppCompatActivity(){
     //
 
 
-    private lateinit var startViewModel: StartViewModel
+    private lateinit var startViewModel: UnsplashViewModel
     private lateinit var binding:ActivityMainBinding
 
     private lateinit var recycler:RecyclerView
+    private lateinit var postAdapter:PostAdapter
+    private lateinit var mLayoutManager: LinearLayoutManager
 
+    private val START_PAGE = 1
+    private var currentPage = START_PAGE
+
+    private var isLoading = false
+
+    @Inject lateinit var navigator: Navigator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initViewModel()
         initBinding()
         initToolbar()
-        loadData()
+        initRecycler()
+        (application as LunaApplication).getComponent().inject(this)
+
+        loadFirstData(currentPage, 10, UnsplashService.Order.ORDER_BY_LATEST)
+
+        var scrollListener = object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val totalItemCount = mLayoutManager.itemCount
+                val visibleItemCount = mLayoutManager.childCount
+                val lastVisibleItemPosition = mLayoutManager.findLastVisibleItemPosition()
+                val firstVisibleItemPosition = mLayoutManager.findFirstVisibleItemPosition()
+
+                startViewModel.isNextLoading.get()?.let {
+                    isLoading = it
+                }
+
+                if (!isLoading)
+                    if( (visibleItemCount + firstVisibleItemPosition) >= totalItemCount
+                            && firstVisibleItemPosition >= 0){
+                        currentPage++
+                        loadNextData(currentPage, 10, UnsplashService.Order.ORDER_BY_LATEST)
+                    }
+
+                }
+
+        }
+        recycler.addOnScrollListener(scrollListener)
     }
 
+
     private fun initViewModel(){
-        startViewModel = ViewModelProviders.of(this).get(StartViewModel::class.java)
+        startViewModel = ViewModelProviders.of(this).get(UnsplashViewModel::class.java)
     }
 
     private fun initBinding(){
@@ -79,30 +127,50 @@ class MainActivity : AppCompatActivity(){
 
     private fun initToolbar(){
         binding.toolbar.title = getString(R.string.app_name)
+        setSupportActionBar(binding.toolbar)
     }
 
     private fun initRecycler(){
         recycler = binding.root.rv_unsplash_posts
-        recycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        this.mLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        recycler.layoutManager = mLayoutManager
     }
 
     private fun initRecyclerAdapter(list: List<UnsplashPictureResponse>){
-        recycler.adapter = PostAdapter(list)
+        this.postAdapter = PostAdapter(list as ArrayList<UnsplashPictureResponse>)
+        recycler.adapter = postAdapter
     }
 
-    private fun loadData(){
-        startViewModel.fetchPictures()
-        showloadDataError()
-        startViewModel.resultdata.observe(this, Observer {
+    private fun loadFirstData(page:Int, per_page:Int, order:String){
+        startViewModel.fetchUnsplashPictures(page, per_page, order)
+
+        startViewModel.resultData.observe(this, Observer {
             it?.let {
-                initRecycler()
                 initRecyclerAdapter(it)
                 startViewModel.isError.value = false
             }
         })
+        //showLoadDataError()
     }
 
-    private fun showloadDataError(){
+    private fun loadNextData(page:Int, per_page: Int, order: String){
+        startViewModel.fetchNextUnsplshPictures(page, per_page, order)
+        startViewModel.nextData.observe(this, Observer {
+            it?.let {
+                postAdapter.addAll(it as ArrayList<UnsplashPictureResponse>)
+                startViewModel.isNextError.value = false
+                startViewModel.nextData.value = null
+            }
+        })
+
+
+        //showLoadNextDataError()
+
+
+    }
+
+    /*
+    private fun showLoadDataError(){
         startViewModel.isError.observe(this, Observer {
             it?.let {
                 if(it) {
@@ -110,6 +178,30 @@ class MainActivity : AppCompatActivity(){
                 }
             }
         })
+    }
+
+    private fun showLoadNextDataError(){
+        startViewModel.isNextError.observe(this, Observer {
+            it?.let {
+                if(it){
+                    Toast.makeText(this, "no Internet for more data", Toast.LENGTH_LONG).show()
+                }
+            }
+        })
+    }
+    */
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater:MenuInflater = menuInflater
+        inflater.inflate(R.menu.main_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when(item?.itemId){
+            R.id.main_menu_giphy -> {navigator.showGifActivity(this)}
+        }
+        return true
     }
 
 }

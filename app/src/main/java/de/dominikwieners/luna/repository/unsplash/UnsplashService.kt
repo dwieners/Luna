@@ -1,4 +1,4 @@
-package de.dominikwieners.luna.repository
+package de.dominikwieners.luna.repository.unsplash
 
 import de.dominikwieners.luna.model.UnsplashPictureResponse
 import io.reactivex.Observable

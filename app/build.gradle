@@ -4,6 +4,9 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'kotlin-kapt'
+
+
 android {
     compileSdkVersion 27
     defaultConfig {
@@ -45,12 +48,15 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-moshi:2.0.0'
     implementation 'com.squareup.okhttp3:okhttp:3.11.0'
 
-    //Glide
+    //Picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
-
 
     //RecyclerView
     implementation 'com.android.support:recyclerview-v7:27.1.1'
+
+    //Dagger2
+    implementation 'com.google.dagger:dagger:2.17'
+    kapt 'com.google.dagger:dagger-compiler:2.17'
 
     //Unit testing
     implementation 'com.android.support:support-v4:27.1.1'

@@ -26,7 +26,9 @@ class PostViewHolder: RecyclerView.ViewHolder{
 
 }
 
-class PostAdapter(private var postList: List<UnsplashPictureResponse>) : RecyclerView.Adapter<PostViewHolder>() {
+class PostAdapter(private var postList: ArrayList<UnsplashPictureResponse>) : RecyclerView.Adapter<PostViewHolder>() {
+
+    private var isFooter = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
         var binding: UnsplashPostItemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.unsplash_post_item, parent, false)
@@ -44,5 +46,20 @@ class PostAdapter(private var postList: List<UnsplashPictureResponse>) : Recycle
         //Should be done width BindingAdapters
         Picasso.get().load(unsplashPictureResponse.urls.small).into(holder.getItemBinding().root.iv_unsplash)
     }
+
+
+    fun add(unsplashPictureResponse: UnsplashPictureResponse){
+        postList.add(unsplashPictureResponse)
+        notifyItemInserted(postList.size - 1)
+    }
+
+    fun addAll(list:ArrayList<UnsplashPictureResponse>){
+        for(picture in list){
+            add(picture)
+            print( picture.user.username + ", " )
+        }
+        println("Adapter List: " + postList.size)
+    }
+
 
 }
