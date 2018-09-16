@@ -1,6 +1,5 @@
 package de.dominikwieners.luna.view
 
-import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
@@ -11,23 +10,21 @@ import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import android.widget.AbsListView
 import android.widget.Toast
 import de.dominikwieners.luna.Navigator
 import de.dominikwieners.luna.R
-import de.dominikwieners.luna.databinding.ActivityMainBinding
+import de.dominikwieners.luna.databinding.ActivityUnsplashBinding
 import de.dominikwieners.luna.di.LunaApplication
 import de.dominikwieners.luna.model.UnsplashPictureResponse
 import de.dominikwieners.luna.repository.unsplash.UnsplashService
 import de.dominikwieners.luna.viewmodel.UnsplashViewModel
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_main.view.*
+import kotlinx.android.synthetic.main.activity_unsplash.view.*
 import javax.inject.Inject
 
 
 
 
-class MainActivity : AppCompatActivity(){
+class UnsplashActivity : AppCompatActivity(){
 
     // View (Activity/Fragment/XML)
     //--------------------------------
@@ -66,10 +63,10 @@ class MainActivity : AppCompatActivity(){
 
 
     private lateinit var startViewModel: UnsplashViewModel
-    private lateinit var binding:ActivityMainBinding
+    private lateinit var binding:ActivityUnsplashBinding
 
     private lateinit var recycler:RecyclerView
-    private lateinit var postAdapter:PostAdapter
+    private lateinit var unsplashPostAdapter:UnsplashPostAdapter
     private lateinit var mLayoutManager: LinearLayoutManager
 
     private val START_PAGE = 1
@@ -80,15 +77,13 @@ class MainActivity : AppCompatActivity(){
     @Inject lateinit var navigator: Navigator
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        (application as LunaApplication).getComponent().inject(this)
         super.onCreate(savedInstanceState)
         initViewModel()
         initBinding()
         initToolbar()
         initRecycler()
-        (application as LunaApplication).getComponent().inject(this)
-
         loadFirstData(currentPage, 10, UnsplashService.Order.ORDER_BY_LATEST)
-
         var scrollListener = object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
@@ -109,7 +104,6 @@ class MainActivity : AppCompatActivity(){
                     }
 
                 }
-
         }
         recycler.addOnScrollListener(scrollListener)
     }
@@ -120,7 +114,7 @@ class MainActivity : AppCompatActivity(){
     }
 
     private fun initBinding(){
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_unsplash)
         binding.viewmodel = startViewModel
         binding.setLifecycleOwner(this)
     }
@@ -137,39 +131,34 @@ class MainActivity : AppCompatActivity(){
     }
 
     private fun initRecyclerAdapter(list: List<UnsplashPictureResponse>){
-        this.postAdapter = PostAdapter(list as ArrayList<UnsplashPictureResponse>)
-        recycler.adapter = postAdapter
+        this.unsplashPostAdapter = UnsplashPostAdapter(list as ArrayList<UnsplashPictureResponse>, this, navigator)
+        recycler.adapter = unsplashPostAdapter
     }
+
 
     private fun loadFirstData(page:Int, per_page:Int, order:String){
         startViewModel.fetchUnsplashPictures(page, per_page, order)
-
         startViewModel.resultData.observe(this, Observer {
             it?.let {
                 initRecyclerAdapter(it)
                 startViewModel.isError.value = false
             }
         })
-        //showLoadDataError()
+        showLoadDataError()
     }
 
     private fun loadNextData(page:Int, per_page: Int, order: String){
         startViewModel.fetchNextUnsplshPictures(page, per_page, order)
         startViewModel.nextData.observe(this, Observer {
             it?.let {
-                postAdapter.addAll(it as ArrayList<UnsplashPictureResponse>)
+                unsplashPostAdapter.addAll(it as ArrayList<UnsplashPictureResponse>)
                 startViewModel.isNextError.value = false
                 startViewModel.nextData.value = null
             }
         })
-
-
-        //showLoadNextDataError()
-
-
+        showLoadNextDataError()
     }
 
-    /*
     private fun showLoadDataError(){
         startViewModel.isError.observe(this, Observer {
             it?.let {
@@ -189,7 +178,6 @@ class MainActivity : AppCompatActivity(){
             }
         })
     }
-    */
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater:MenuInflater = menuInflater

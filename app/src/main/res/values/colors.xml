@@ -17,7 +17,7 @@
     <color name="cardBackgroundColor_light">#ffffff</color>
     <color name="progressBarColor_light">#000000</color>
     <color name="rippleColor_light">#40000000</color>
-    <color name="previewBackgroundColor_light">#212121</color>
+    <color name="previewBackgroundColor_light">#303030</color>
 
     <color name="colorPrimary_dark">#212121</color>
     <color name="colorPrimaryDark_dark">#1a1a1a</color>
@@ -40,4 +40,8 @@
     <color name="progressBarColor_black">#ffffff</color>
     <color name="rippleColor_black">#40ffffff</color>
     <color name="previewBackgroundColor_black">#000000</color>
+
+    <color name="progressBar_red">#e91e63</color>
+    <color name="progressBar_blue">#2196f3</color>
+    <color name="progressBar_green">#19e68c</color>
 </resources>

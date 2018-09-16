@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -6,9 +6,10 @@
         <item name="colorPrimary">@color/colorPrimary_dark</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark_dark</item>
         <item name="colorAccent">@color/colorAccent_dark</item>
+        <item name="android:windowContentTransitions" tools:targetApi="lollipop">true</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 
     <style name="LunaToolbarTheme">
         <item name="android:layout_width">match_parent</item>
@@ -18,5 +19,21 @@
         <item name="titleTextColor">@android:color/white</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
     </style>
+
+    <style name="LunaDarkTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary_dark</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark_dark</item>
+        <item name="colorAccent">@color/colorAccent_dark</item>
+        <item name="android:windowContentTransitions" tools:targetApi="lollipop">true</item>
+        <item name="android:windowBackground">@color/previewBackgroundColor_light</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:indeterminateTint" tools:targetApi="lollipop">@color/white</item>
+        <item name="android:itemBackground">@color/previewBackgroundColor_light</item>
+    </style>
+
+
+    <style name="LunaDarkTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+
 
 </resources>

@@ -1,18 +1,21 @@
 package de.dominikwieners.luna.view
 
-import android.databinding.BindingAdapter
+import android.app.Activity
+import android.content.Context
 import android.databinding.DataBindingUtil
+import android.os.Parcelable
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import com.squareup.picasso.Picasso
+import de.dominikwieners.luna.Navigator
 import de.dominikwieners.luna.R
 import de.dominikwieners.luna.databinding.UnsplashPostItemBinding
 import de.dominikwieners.luna.model.UnsplashPictureResponse
 import kotlinx.android.synthetic.main.unsplash_post_item.view.*
 
-class PostViewHolder: RecyclerView.ViewHolder{
+class UnsplashViewHolder: RecyclerView.ViewHolder{
 
     private val itemBinding: UnsplashPostItemBinding
 
@@ -26,25 +29,35 @@ class PostViewHolder: RecyclerView.ViewHolder{
 
 }
 
-class PostAdapter(private var postList: ArrayList<UnsplashPictureResponse>) : RecyclerView.Adapter<PostViewHolder>() {
+class UnsplashPostAdapter(private var postList: ArrayList<UnsplashPictureResponse>, private  var context: Context, private var navigator: Navigator) : RecyclerView.Adapter<UnsplashViewHolder>() {
 
     private var isFooter = false
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UnsplashViewHolder {
         var binding: UnsplashPostItemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.unsplash_post_item, parent, false)
-        return PostViewHolder(binding)
+        return UnsplashViewHolder(binding)
     }
 
     override fun getItemCount(): Int {
         return postList.size
     }
 
-    override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: UnsplashViewHolder, position: Int) {
         var unsplashPictureResponse = postList[position]
-        holder.getItemBinding().picture = unsplashPictureResponse
 
-        //Should be done width BindingAdapters
-        Picasso.get().load(unsplashPictureResponse.urls.small).into(holder.getItemBinding().root.iv_unsplash)
+        holder.getItemBinding().picture = unsplashPictureResponse
+        Picasso.get().load(unsplashPictureResponse.urls?.small).into(holder.getItemBinding().root.iv_unsplash)
+        holder.itemView.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+                println(unsplashPictureResponse.color)
+                navigator.showUnsplashDetailActivity(getActivity(), unsplashPictureResponse)
+            }
+        })
+    }
+
+
+    fun getActivity():Activity{
+        return context as Activity
     }
 
 
@@ -56,10 +69,6 @@ class PostAdapter(private var postList: ArrayList<UnsplashPictureResponse>) : Re
     fun addAll(list:ArrayList<UnsplashPictureResponse>){
         for(picture in list){
             add(picture)
-            print( picture.user.username + ", " )
         }
-        println("Adapter List: " + postList.size)
     }
-
-
 }
