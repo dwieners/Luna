@@ -22,11 +22,13 @@ class Navigator @Inject constructor() {
         activity.finish()
     }
 
-    fun showUnsplashDetailActivity(activity: Activity, unsplashPictureResponse: UnsplashPictureResponse){
+    fun showUnsplashDetailActivity(activity: Activity, unsplashPictureResponse: UnsplashPictureResponse, destroy: Boolean){
         val intent = Intent(activity, UnsplashDetailActivity::class.java)
         intent.putExtra(Config.UNSPLASH_DEAIL_EXTRA, unsplashPictureResponse)
         activity.startActivity(intent)
-        activity.finish()
+        if(destroy) {
+            activity.finish()
+        }
     }
 
     fun showUnsplashDetailActivityImageTransition(activity: Activity, unsplashPictureResponse: UnsplashPictureResponse, view:ImageView){

@@ -50,7 +50,7 @@ class UnsplashPostAdapter(private var postList: ArrayList<UnsplashPictureRespons
         holder.itemView.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 println(unsplashPictureResponse.color)
-                navigator.showUnsplashDetailActivity(getActivity(), unsplashPictureResponse)
+                navigator.showUnsplashDetailActivity(getActivity(), unsplashPictureResponse, false)
             }
         })
     }

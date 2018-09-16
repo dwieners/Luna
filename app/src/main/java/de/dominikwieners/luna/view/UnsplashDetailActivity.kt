@@ -57,17 +57,13 @@ class UnsplashDetailActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        navigator.showUnsplashActivity(this)
+        finish()
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when(item?.itemId){
-            android.R.id.home -> navigator.showUnsplashActivity(this)
+            android.R.id.home -> finish()
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    fun convertPixelsToDp(px: Float, context: Context): Float {
-        return px / (context.getResources().getDisplayMetrics().densityDpi as Float / DisplayMetrics.DENSITY_DEFAULT)
     }
 }
