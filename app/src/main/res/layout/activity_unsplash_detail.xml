@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 <data>
     <variable
-        name="detail"
-        type="de.dominikwieners.luna.model.UnsplashPictureResponse"/>
+        name="viewmodel"
+        type="de.dominikwieners.luna.viewmodel.UnsplashDetailViewModel"/>
 
     <import type="android.view.View" />
 </data>
@@ -67,7 +67,7 @@
                     android:layout_marginEnd="16dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="24dp"
-                    android:text="@{@string/unsplash_detail_user(detail.user.first_name, detail.user.last_name)}"
+                    android:text="@{@string/unsplash_detail_user(viewmodel.detail.user.first_name, viewmodel.detail.user.last_name)}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -85,7 +85,7 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:text="@{detail.user.location}"
+                android:text="@{viewmodel.detail.user.location}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"

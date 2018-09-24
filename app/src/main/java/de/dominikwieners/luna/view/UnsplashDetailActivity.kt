@@ -1,5 +1,6 @@
 package de.dominikwieners.luna.view
 
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.databinding.DataBindingUtil
 import android.support.v7.app.AppCompatActivity
@@ -14,7 +15,7 @@ import de.dominikwieners.luna.di.LunaApplication
 import de.dominikwieners.luna.model.UnsplashPictureResponse
 import javax.inject.Inject
 import android.util.DisplayMetrics
-
+import de.dominikwieners.luna.viewmodel.UnsplashDetailViewModel
 
 
 class UnsplashDetailActivity : AppCompatActivity() {
@@ -24,6 +25,7 @@ class UnsplashDetailActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityUnsplashDetailBinding
     lateinit var unsplashPictureResponse:UnsplashPictureResponse
+    lateinit var unsplashDetailViewModel:UnsplashDetailViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,15 +33,21 @@ class UnsplashDetailActivity : AppCompatActivity() {
 
         unsplashPictureResponse = intent.extras.getParcelable(Config.UNSPLASH_DEAIL_EXTRA)
 
-        initBinding(unsplashPictureResponse)
+        initViewModel(unsplashPictureResponse)
+        initBinding(unsplashDetailViewModel)
         initToolbar()
         setImages()
 
     }
 
-    private fun initBinding(unsplashPictureResponse:UnsplashPictureResponse){
+    private fun initViewModel(unsplashPictureResponse: UnsplashPictureResponse){
+        unsplashDetailViewModel = ViewModelProviders.of(this).get(UnsplashDetailViewModel::class.java)
+        unsplashDetailViewModel.init(unsplashPictureResponse)
+    }
+
+    private fun initBinding(unsplashDetailViewModel: UnsplashDetailViewModel){
         binding = DataBindingUtil.setContentView(this, R.layout.activity_unsplash_detail)
-        binding.detail = unsplashPictureResponse
+        binding.viewmodel = unsplashDetailViewModel
     }
 
     private fun initToolbar(){
@@ -51,8 +59,8 @@ class UnsplashDetailActivity : AppCompatActivity() {
     }
 
     private fun setImages(){
-        Picasso.get().load(unsplashPictureResponse.urls?.small).into(binding.unsplashDetailIvUnsplash)
-        Picasso.get().load(unsplashPictureResponse.user?.profile_image?.small).into(binding.unsplashDetailIvUser)
+        Picasso.get().load(binding.viewmodel!!.detail.value!!.urls?.small).into(binding.unsplashDetailIvUnsplash)
+        Picasso.get().load(binding.viewmodel!!.detail.value!!.user?.profile_image?.small).into(binding.unsplashDetailIvUser)
     }
 
     override fun onBackPressed() {
