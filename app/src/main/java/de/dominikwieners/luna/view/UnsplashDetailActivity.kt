@@ -16,6 +16,8 @@ import de.dominikwieners.luna.model.UnsplashPictureResponse
 import javax.inject.Inject
 import android.util.DisplayMetrics
 import de.dominikwieners.luna.viewmodel.UnsplashDetailViewModel
+import java.sql.Timestamp
+import java.text.SimpleDateFormat
 
 
 class UnsplashDetailActivity : AppCompatActivity() {
@@ -59,8 +61,8 @@ class UnsplashDetailActivity : AppCompatActivity() {
     }
 
     private fun setImages(){
-        Picasso.get().load(binding.viewmodel!!.detail.value!!.urls?.small).into(binding.unsplashDetailIvUnsplash)
-        Picasso.get().load(binding.viewmodel!!.detail.value!!.user?.profile_image?.small).into(binding.unsplashDetailIvUser)
+       Picasso.get().load(binding.viewmodel!!.detail.value!!.urls?.small).into(binding.unsplashDetailIvPhoto)
+       Picasso.get().load(binding.viewmodel!!.detail.value!!.user?.profile_image?.small).into(binding.unsplashDetailIvUser)
     }
 
     override fun onBackPressed() {

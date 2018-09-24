@@ -29,7 +29,7 @@
                 app:layout_scrollFlags="scroll|enterAlways|snap" />
 
             <ImageView
-                android:id="@+id/unsplash_detail_iv_unsplash"
+                android:id="@+id/unsplash_detail_iv_photo"
                 android:layout_width="0dp"
                 android:layout_height="400dp"
                 android:scaleType="centerCrop"
@@ -45,7 +45,7 @@
                 android:background="@color/previewBackgroundColor_dark"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/unsplash_detail_iv_unsplash">
+                app:layout_constraintTop_toBottomOf="@+id/unsplash_detail_iv_photo">
 
                 <ImageView
                     android:id="@+id/unsplash_detail_iv_user"
@@ -78,33 +78,129 @@
 
             </android.support.constraint.ConstraintLayout>
 
-            <TextView
-                android:id="@+id/unsplash_detail_tv_location"
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="8dp">
+
+                    <ImageView
+                        android:id="@+id/unsplash_detail_iv_location"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_marginRight="16dp"
+                        app:srcCompat="@drawable/baseline_location_on_white_36" />
+
+                    <TextView
+                        android:id="@+id/unsplash_detail_tv_location"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="@{viewmodel.location}"
+                        tools:text="New York, United States" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="8dp">
+
+                    <ImageView
+                        android:id="@+id/unsplash_detail_iv_date"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_marginRight="16dp"
+                        app:srcCompat="@drawable/baseline_calendar_today_white_36" />
+
+                    <TextView
+                        android:id="@+id/unsplash_detail_tv_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="@{viewmodel.createdAt}"
+                        tools:text="2018-08-01" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="8dp">
+
+                    <ImageView
+                        android:id="@+id/unsplash_detail_iv_likes"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_marginRight="16dp"
+                        app:srcCompat="@drawable/baseline_favorite_white_36" />
+
+                    <TextView
+                        android:id="@+id/unsplash_detail_tv_likes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="@{@string/unsplash_detail_likes(viewmodel.likes)}"
+                        tools:text="2018-08-01" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <android.support.constraint.ConstraintLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:text="@{viewmodel.detail.user.location}"
+                android:background="@color/previewBackgroundColor_dark"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"
-                tools:text="New York, United States" />
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+                app:layout_constraintVertical_bias="1.0">
 
-            <TextView
-                android:id="@+id/unsplash_detail_tv_date"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:text="2018-09-01"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/unsplash_detail_tv_location"
-                tools:text="2018-08-01" />
+                <Button
+                    android:id="@+id/unsplash_detail_tv_download"
+                    style="@style/LunaDarkTheme.Button"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="16dp"
+                    android:text="Download"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
+                <Button
+                    android:id="@+id/unsplash_detail_tv_share"
+                    style="@style/LunaDarkTheme.Button"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="16dp"
+                    android:text="Share"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/unsplash_detail_tv_download"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+            </android.support.constraint.ConstraintLayout>
 
         </android.support.constraint.ConstraintLayout>
 
