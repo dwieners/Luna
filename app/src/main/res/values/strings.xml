@@ -2,4 +2,6 @@
     <string name="app_name">Luna</string>
 
     <string name="unsplash_detail_user">By %1$s %2$s</string>
+    <string name="unsplash_detail_likes">%1$s Likes</string>
+    <string name="unsplash_detail_downloads">%1$s Downloads</string>
 </resources>
