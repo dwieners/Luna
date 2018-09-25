@@ -188,7 +188,7 @@ class UnsplashActivity : AppCompatActivity(){
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when(item?.itemId){
             R.id.main_menu_giphy -> {navigator.showGifActivity(this)}
-            R.id.main_menu_search -> {navigator.showUnsplashSearchActivity(this, false)}
+            R.id.main_menu_search -> {navigator.showUnsplashSearchActivity(this, true)}
         }
         return true
     }

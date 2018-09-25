@@ -15,7 +15,7 @@
     tools:context=".view.UnsplashSearchActivity">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/activity_unsplash_detail_toolbar"
+        android:id="@+id/unsplash_search_toolbar"
         style="@style/LunaToolbarTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -27,13 +27,24 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:floatingSearch_searchBarMarginLeft="8dp"
-        app:floatingSearch_searchBarMarginTop="8dp"
+        app:floatingSearch_searchBarMarginTop="0dp"
         app:floatingSearch_searchBarMarginRight="8dp"
         app:floatingSearch_searchHint="Search..."
         app:floatingSearch_suggestionsListAnimDuration="250"
         app:floatingSearch_showSearchKey="false"
         app:floatingSearch_leftActionMode="showHamburger"
-        app:floatingSearch_close_search_on_keyboard_dismiss="true"/>
+        app:floatingSearch_close_search_on_keyboard_dismiss="true">
+
+    </com.arlib.floatingsearchview.FloatingSearchView>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/unsplash_search_rv_posts"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/unsplash_search_toolbar" />
 
 </android.support.constraint.ConstraintLayout>
 </layout>

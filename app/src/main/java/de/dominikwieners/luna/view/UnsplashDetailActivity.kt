@@ -65,8 +65,8 @@ class UnsplashDetailActivity : AppCompatActivity() {
     }
 
     private fun initToolbar(){
-        binding.activityUnsplashDetailToolbar.title = " "
-        setSupportActionBar(binding.activityUnsplashDetailToolbar)
+        binding.unsplashDetailToolbar.title = " "
+        setSupportActionBar(binding.unsplashDetailToolbar)
         supportActionBar?.let{
             it.setDisplayHomeAsUpEnabled(true)
         }

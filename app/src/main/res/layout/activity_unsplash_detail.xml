@@ -21,7 +21,7 @@
             tools:context=".view.UnsplashDetailActivity">
 
             <android.support.v7.widget.Toolbar
-                android:id="@+id/activity_unsplash_detail_toolbar"
+                android:id="@+id/unsplash_detail_toolbar"
                 style="@style/LunaToolbarTheme"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -36,7 +36,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/activity_unsplash_detail_toolbar"
+                app:layout_constraintTop_toBottomOf="@+id/unsplash_detail_toolbar"
                 tools:src="@android:color/holo_blue_bright" />
 
             <android.support.constraint.ConstraintLayout
