@@ -3,7 +3,7 @@
     package="de.dominikwieners.luna">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.SET_WALLPAPER"/>
+    <uses-permission android:name="android.permission.SET_WALLPAPER" />
 
     <application
         android:name=".di.LunaApplication"
@@ -20,8 +20,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.GifActivity" />
-        <activity android:name=".view.UnsplashDetailActivity"></activity>
+        <activity android:name=".view.GiphyActivity" />
+        <activity android:name=".view.UnsplashDetailActivity" />
+        <activity android:name=".view.UnsplashSearchActivity"></activity>
     </application>
 
 </manifest>

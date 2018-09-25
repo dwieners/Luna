@@ -65,15 +65,15 @@ class UnsplashDetailActivity : AppCompatActivity() {
     }
 
     private fun initToolbar(){
-        binding.toolbar.title = getString(R.string.app_name)
-        setSupportActionBar(binding.toolbar)
+        binding.activityUnsplashDetailToolbar.title = " "
+        setSupportActionBar(binding.activityUnsplashDetailToolbar)
         supportActionBar?.let{
             it.setDisplayHomeAsUpEnabled(true)
         }
     }
 
     private fun setImages(){
-       Picasso.get().load(binding.viewmodel!!.detail.value!!.urls?.small).into(binding.unsplashDetailIvPhoto, object : Callback {
+       Picasso.get().load(binding.viewmodel!!.detail.value!!.urls?.regular).into(binding.unsplashDetailIvPhoto, object : Callback {
            override fun onSuccess() {
                pictureDrawable.value = binding.unsplashDetailIvPhoto.drawable
            }

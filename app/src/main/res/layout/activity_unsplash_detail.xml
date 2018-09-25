@@ -21,7 +21,7 @@
             tools:context=".view.UnsplashDetailActivity">
 
             <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
+                android:id="@+id/activity_unsplash_detail_toolbar"
                 style="@style/LunaToolbarTheme"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -33,10 +33,11 @@
                 android:layout_width="0dp"
                 android:layout_height="400dp"
                 android:scaleType="centerCrop"
-                tools:src="@android:color/holo_blue_bright"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/toolbar"/>
+                app:layout_constraintTop_toBottomOf="@+id/activity_unsplash_detail_toolbar"
+                tools:src="@android:color/holo_blue_bright" />
 
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/constraintLayout2"
@@ -84,6 +85,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
 
@@ -176,14 +178,16 @@
                     style="@style/LunaDarkTheme.Button"
                     android:layout_width="0dp"
                     android:layout_height="48dp"
+                    android:layout_marginBottom="16dp"
                     android:layout_marginEnd="32dp"
                     android:layout_marginStart="32dp"
                     android:layout_marginTop="16dp"
                     android:text="Download"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toBottomOf="@+id/unsplash_detail_bu_wallpaper" />
 
                 <Button
                     android:id="@+id/unsplash_detail_bu_wallpaper"
@@ -192,14 +196,12 @@
                     android:layout_height="48dp"
                     android:layout_marginEnd="32dp"
                     android:layout_marginStart="32dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginTop="16dp"
                     android:text="Wallpaper"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/unsplash_detail_bu_download"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent" />
 
 
             </android.support.constraint.ConstraintLayout>
