@@ -43,6 +43,8 @@ class UnsplashSearchActivity : AppCompatActivity() {
     private var currentPage = START_PAGE
     private var isLoading = false
 
+    private var currentQuery = " "
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,12 +56,17 @@ class UnsplashSearchActivity : AppCompatActivity() {
         initSearchBar()
         initRecycler()
 
-        loadFirstData("office" , 10, currentPage)
+        binding.unsplashSearchSearchview.setOnSearchListener(object : FloatingSearchView.OnSearchListener {
+            override fun onSearchAction(currentQuery: String?) {
+                currentQuery?.let {
+                    loadFirstData( it , 10, currentPage)
+                }
+            }
 
-
-
-        //binding.unsplashSearchSearchview.setOnSearchListener()
-
+            override fun onSuggestionClicked(searchSuggestion: SearchSuggestion?) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+        })
 
         var scrollListener = object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
@@ -77,7 +84,7 @@ class UnsplashSearchActivity : AppCompatActivity() {
                     if( (visibleItemCount + firstVisibleItemPosition) >= totalItemCount
                             && firstVisibleItemPosition >= 0){
                         currentPage++
-                        loadNextData("office", currentPage, 10)
+                        loadNextData(currentQuery, currentPage, 10)
                     }
 
             }
@@ -119,12 +126,11 @@ class UnsplashSearchActivity : AppCompatActivity() {
     }
 
     private fun loadFirstData(query:String, page:Int, per_page: Int){
-        println("Hallo1")
+        currentQuery = query
         startViewModel.fetchUnsplashSearchResult(query, page, per_page)
         startViewModel.resultData.observe(this, Observer {
             it?.let {
                 initRecyclerAdapter(it.results)
-                println("Hallo")
                 startViewModel.isError.value = false
             }
         })
