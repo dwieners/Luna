@@ -1,5 +1,6 @@
 package de.dominikwieners.luna.viewmodel
 
+import android.annotation.SuppressLint
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
@@ -49,6 +50,7 @@ class UnsplashViewModel : ViewModel(){
         UnsplashRepository.create()
     }
 
+    @SuppressLint("CheckResult")
     fun fetchUnsplashPictures(page:Int, per_page:Int, order:String) {
         client.getPictures(page, per_page, order)
                 .subscribeOn(Schedulers.io())
@@ -61,6 +63,7 @@ class UnsplashViewModel : ViewModel(){
 
     }
 
+    @SuppressLint("CheckResult")
     fun fetchNextUnsplshPictures(page: Int, per_page: Int, order: String){
         client.getPictures(page, per_page, order)
                 .subscribeOn(Schedulers.io())
