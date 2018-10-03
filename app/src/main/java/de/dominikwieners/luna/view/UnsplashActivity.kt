@@ -120,8 +120,8 @@ class UnsplashActivity : AppCompatActivity(){
     }
 
     private fun initToolbar(){
-        binding.toolbar.title = getString(R.string.app_name)
-        setSupportActionBar(binding.toolbar)
+        binding.activityUnsplashToolbar.title = getString(R.string.unsplash_name)
+        setSupportActionBar(binding.activityUnsplashToolbar)
     }
 
     private fun initRecycler(){
@@ -188,6 +188,7 @@ class UnsplashActivity : AppCompatActivity(){
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when(item?.itemId){
             R.id.main_menu_giphy -> {navigator.showGifActivity(this)}
+            R.id.main_menu_search -> {navigator.showUnsplashSearchActivity(this, true)}
         }
         return true
     }

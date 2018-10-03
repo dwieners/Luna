@@ -44,4 +44,6 @@
     <color name="progressBar_red">#e91e63</color>
     <color name="progressBar_blue">#2196f3</color>
     <color name="progressBar_green">#19e68c</color>
+
+    <color name="button_pink">#FE0186</color>
 </resources>

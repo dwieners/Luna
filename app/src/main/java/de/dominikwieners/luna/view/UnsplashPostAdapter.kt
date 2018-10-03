@@ -56,19 +56,21 @@ class UnsplashPostAdapter(private var postList: ArrayList<UnsplashPictureRespons
     }
 
 
-    fun getActivity():Activity{
+    fun getActivity(): Activity {
         return context as Activity
     }
 
 
-    fun add(unsplashPictureResponse: UnsplashPictureResponse){
+    fun add(unsplashPictureResponse: UnsplashPictureResponse) {
         postList.add(unsplashPictureResponse)
         notifyItemInserted(postList.size - 1)
     }
 
-    fun addAll(list:ArrayList<UnsplashPictureResponse>){
-        for(picture in list){
+
+    fun addAll(list: ArrayList<UnsplashPictureResponse>) {
+        for (picture in list) {
             add(picture)
         }
     }
+
 }

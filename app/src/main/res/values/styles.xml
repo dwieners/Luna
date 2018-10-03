@@ -31,6 +31,11 @@
         <item name="android:itemBackground">@color/previewBackgroundColor_light</item>
     </style>
 
+    <style name="LunaDarkTheme.Button" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:backgroundTint" tools:targetApi="lollipop">@color/previewBackgroundColor_light</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
 
     <style name="LunaDarkTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Light" />
 

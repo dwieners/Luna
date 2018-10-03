@@ -3,13 +3,14 @@
     package="de.dominikwieners.luna">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.SET_WALLPAPER" />
 
     <application
         android:name=".di.LunaApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_luna_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_luna_launcher"
         android:supportsRtl="true"
         android:theme="@style/LunaDarkTheme">
         <activity android:name=".view.UnsplashActivity">
@@ -19,8 +20,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.GifActivity" />
-        <activity android:name=".view.UnsplashDetailActivity"></activity>
+        <activity android:name=".view.GiphyActivity" />
+        <activity android:name=".view.UnsplashDetailActivity" />
+        <activity android:name=".view.UnsplashSearchActivity"></activity>
     </application>
 
 </manifest>
