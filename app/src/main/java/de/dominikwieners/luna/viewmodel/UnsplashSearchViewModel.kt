@@ -13,23 +13,30 @@ class UnsplashSearchViewModel : ViewModel(){
 
     var resultData = MutableLiveData<UnsplashPictureSearchResponse>()
     var isError  = MutableLiveData<Boolean>()
-    var isLoading: ObservableField<Boolean> = ObservableField()
+    var isLoading = MutableLiveData<Boolean>()
 
     var nextData = MutableLiveData<UnsplashPictureSearchResponse>()
     var isNextError = MutableLiveData<Boolean>()
-    var isNextLoading: ObservableField<Boolean> = ObservableField()
+    var isNextLoading = MutableLiveData<Boolean>()
 
     val client by lazy {
         UnsplashRepository.create()
     }
 
 
+    @SuppressLint("CheckResult")
     fun fetchUnsplashSearchResult(query:String, page:Int, per_page:Int) {
         client.searchPhotos(query,page,per_page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { isLoading.set(true) }
-                .doOnTerminate { isLoading.set(false) }
+                .doOnSubscribe {
+                    isLoading.value = true
+                    println("Loading")
+                }
+                .doOnTerminate {
+                    isLoading.value = false
+                    println("Finish")
+                }
                 .subscribe(
                         { result -> resultData.value = result},
                         { error ->   isError.value = true})
@@ -37,12 +44,19 @@ class UnsplashSearchViewModel : ViewModel(){
     }
 
 
+    @SuppressLint("CheckResult")
     fun fetchNextUnsplshSearchResult(query: String, page: Int, per_page: Int){
-        client.searchPhotos(query, per_page, per_page)
+        client.searchPhotos(query, page, per_page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { isNextLoading.set(true) }
-                .doOnTerminate { isNextLoading.set(false) }
+                .doOnSubscribe {
+                    isNextLoading.value = true
+                    println("LoadingNext")
+                }
+                .doOnTerminate {
+                    isNextLoading.value = false
+                    println("FinishNext")
+                }
                 .subscribe(
                         { result ->  nextData.value = result},
                         { error ->   isNextError.value = true})

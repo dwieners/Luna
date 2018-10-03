@@ -7,8 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.view.KeyEvent
-import android.view.animation.Animation
+import android.view.View
 import android.view.animation.AnimationUtils
 import de.dominikwieners.luna.Navigator
 import de.dominikwieners.luna.R
@@ -17,12 +16,8 @@ import de.dominikwieners.luna.di.LunaApplication
 import de.dominikwieners.luna.model.UnsplashPictureResponse
 import de.dominikwieners.luna.viewmodel.UnsplashSearchViewModel
 import javax.inject.Inject
-import android.view.KeyEvent.KEYCODE_ENTER
-import android.view.KeyEvent.KEYCODE_DPAD_CENTER
-import android.view.View
 import com.arlib.floatingsearchview.FloatingSearchView
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion
-import com.arlib.floatingsearchview.util.view.SearchInputView
 
 
 class UnsplashSearchActivity : AppCompatActivity() {
@@ -32,7 +27,7 @@ class UnsplashSearchActivity : AppCompatActivity() {
     lateinit var navigator: Navigator
 
     lateinit var binding:ActivityUnsplashSearchBinding
-    lateinit var startViewModel:UnsplashSearchViewModel
+    lateinit var searchViewModel:UnsplashSearchViewModel
 
     lateinit var recycler: RecyclerView
     lateinit var unsplashPostAdapter: UnsplashPostAdapter
@@ -56,48 +51,18 @@ class UnsplashSearchActivity : AppCompatActivity() {
         initSearchBar()
         initRecycler()
 
-        binding.unsplashSearchSearchview.setOnSearchListener(object : FloatingSearchView.OnSearchListener {
-            override fun onSearchAction(currentQuery: String?) {
-                currentQuery?.let {
-                    loadFirstData( it , 10, currentPage)
-                }
-            }
-
-            override fun onSuggestionClicked(searchSuggestion: SearchSuggestion?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-        })
-
-        var scrollListener = object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                val totalItemCount = mLayoutManager.itemCount
-                val visibleItemCount = mLayoutManager.childCount
-                val lastVisibleItemPosition = mLayoutManager.findLastVisibleItemPosition()
-                val firstVisibleItemPosition = mLayoutManager.findFirstVisibleItemPosition()
-
-                startViewModel.isNextLoading.get()?.let {
-                    isLoading = it
-                }
-
-                if (!isLoading)
-                    if( (visibleItemCount + firstVisibleItemPosition) >= totalItemCount
-                            && firstVisibleItemPosition >= 0){
-                        currentPage++
-                        loadNextData(currentQuery, currentPage, 10)
-                    }
-
-            }
-        }
-        recycler.addOnScrollListener(scrollListener)
+        initSearchBarActions()
+        initRecyclerActions()
+        showLoading()
     }
 
     fun initBinding(){
         binding = DataBindingUtil.setContentView(this, R.layout.activity_unsplash_search)
+        binding.setLifecycleOwner(this)
     }
 
     private fun initViewModel(){
-        startViewModel = ViewModelProviders.of(this).get(UnsplashSearchViewModel::class.java)
+        searchViewModel = ViewModelProviders.of(this).get(UnsplashSearchViewModel::class.java)
     }
 
     fun initToolbar(){
@@ -125,27 +90,86 @@ class UnsplashSearchActivity : AppCompatActivity() {
         navigator.showUnsplashActivity(this)
     }
 
+    private fun showLoading(){
+        searchViewModel.isLoading.observe(this, Observer {
+            it?.let {
+                if(it){
+                    binding.unsplashSearchProgressLoading.visibility = View.VISIBLE
+                }else{
+                    binding.unsplashSearchProgressLoading.visibility = View.GONE
+                }
+            }
+        })
+
+        searchViewModel.isNextLoading.observe(this, Observer {
+            it?.let {
+                isLoading = it
+                if(it){
+                    binding.unsplashSearchProgressNextLoading.visibility = View.VISIBLE
+                }else{
+                    binding.unsplashSearchProgressNextLoading.visibility = View.GONE
+                }
+
+            }
+        })
+    }
+
     private fun loadFirstData(query:String, page:Int, per_page: Int){
         currentQuery = query
-        startViewModel.fetchUnsplashSearchResult(query, page, per_page)
-        startViewModel.resultData.observe(this, Observer {
+        searchViewModel.fetchUnsplashSearchResult(query, page, per_page)
+        searchViewModel.resultData.observe(this, Observer {
             it?.let {
                 initRecyclerAdapter(it.results)
-                startViewModel.isError.value = false
+                searchViewModel.isError.value = false
             }
         })
         //showLoadDataError()
     }
 
     private fun loadNextData(query:String, page: Int, per_page:Int){
-        startViewModel.fetchNextUnsplshSearchResult(query, per_page, page)
-        startViewModel.nextData.observe(this, Observer {
+        searchViewModel.fetchNextUnsplshSearchResult(query, per_page, page)
+        searchViewModel.nextData.observe(this, Observer {
             it?.let {
                 unsplashPostAdapter.addAll(it.results as ArrayList<UnsplashPictureResponse>)
-                startViewModel.isNextError.value = false
-                startViewModel.nextData.value = null
+                searchViewModel.isNextError.value = false
+                searchViewModel.nextData.value = null
             }
         })
         //showLoadNextDataError()
+    }
+
+    private fun initSearchBarActions(){
+        binding.unsplashSearchSearchview.setOnSearchListener(object : FloatingSearchView.OnSearchListener {
+            override fun onSearchAction(currentQuery: String?) {
+                currentQuery?.let {
+                    loadFirstData( it , 10, currentPage)
+                }
+            }
+
+            override fun onSuggestionClicked(searchSuggestion: SearchSuggestion?) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+        })
+    }
+
+    private fun initRecyclerActions(){
+        var scrollListener = object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val totalItemCount = mLayoutManager.itemCount
+                val visibleItemCount = mLayoutManager.childCount
+                val lastVisibleItemPosition = mLayoutManager.findLastVisibleItemPosition()
+                val firstVisibleItemPosition = mLayoutManager.findFirstVisibleItemPosition()
+
+                if (!isLoading)
+                    if( (visibleItemCount + firstVisibleItemPosition) >= totalItemCount
+                            && firstVisibleItemPosition >= 0){
+                        currentPage++
+                        loadNextData(currentQuery, currentPage, 10)
+                    }
+
+            }
+        }
+        recycler.addOnScrollListener(scrollListener)
     }
 }
