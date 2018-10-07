@@ -51,6 +51,9 @@ dependencies {
     //Picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
 
+    //SmartToast
+    implementation 'com.github.dwieners:SmartToast:0.1.2'
+
     //RecyclerView
     implementation 'com.android.support:recyclerview-v7:27.1.1'
 

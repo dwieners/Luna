@@ -5,6 +5,7 @@ import android.os.Bundle
 import de.dominikwieners.luna.Navigator
 import de.dominikwieners.luna.R
 import de.dominikwieners.luna.di.LunaApplication
+import de.dominikwieners.smarttoast.SmartToast
 import javax.inject.Inject
 
 class GiphyActivity : AppCompatActivity() {

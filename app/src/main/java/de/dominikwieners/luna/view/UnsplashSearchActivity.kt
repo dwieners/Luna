@@ -18,6 +18,7 @@ import de.dominikwieners.luna.viewmodel.UnsplashSearchViewModel
 import javax.inject.Inject
 import com.arlib.floatingsearchview.FloatingSearchView
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion
+import de.dominikwieners.smarttoast.SmartToast
 
 
 class UnsplashSearchActivity : AppCompatActivity() {
@@ -120,7 +121,11 @@ class UnsplashSearchActivity : AppCompatActivity() {
         searchViewModel.resultData.observe(this, Observer {
             it?.let {
                 initRecyclerAdapter(it.results)
+                if (it.total == 0){
+                    loadingWithoutResult();
+                }
                 searchViewModel.isError.value = false
+
             }
         })
         //showLoadDataError()
@@ -138,6 +143,9 @@ class UnsplashSearchActivity : AppCompatActivity() {
         //showLoadNextDataError()
     }
 
+    private fun loadingWithoutResult(){
+        SmartToast.infoToast(this, resources.getString(R.string.unsplash_search_loading_no_result)).show()
+    }
     private fun initSearchBarActions(){
         binding.unsplashSearchSearchview.setOnSearchListener(object : FloatingSearchView.OnSearchListener {
             override fun onSearchAction(currentQuery: String?) {
