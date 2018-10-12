@@ -9,4 +9,6 @@
     <string name="unsplash_search_loading_no_result">No result</string>
 
     <string name="giphy_name">Giphy</string>
+    <string name="navigation_drawer_open">open</string>
+    <string name="navigation_drawer_close">close</string>
 </resources>

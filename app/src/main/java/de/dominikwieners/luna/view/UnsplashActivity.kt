@@ -4,9 +4,12 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.support.v4.widget.DrawerLayout
+import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -69,6 +72,10 @@ class UnsplashActivity : AppCompatActivity(){
     private lateinit var unsplashPostAdapter:UnsplashPostAdapter
     private lateinit var mLayoutManager: LinearLayoutManager
 
+    private lateinit var toolbar: Toolbar
+    private lateinit var drawer: DrawerLayout
+    private lateinit var drawerToggle: ActionBarDrawerToggle
+
     private val START_PAGE = 1
     private var currentPage = START_PAGE
 
@@ -83,6 +90,10 @@ class UnsplashActivity : AppCompatActivity(){
         initBinding()
         initToolbar()
         initRecycler()
+
+
+
+
         loadFirstData(currentPage, 10, UnsplashService.Order.ORDER_BY_LATEST)
         var scrollListener = object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
@@ -122,6 +133,13 @@ class UnsplashActivity : AppCompatActivity(){
     private fun initToolbar(){
         binding.activityUnsplashToolbar.title = getString(R.string.unsplash_name)
         setSupportActionBar(binding.activityUnsplashToolbar)
+
+        toolbar = binding.activityUnsplashToolbar
+        drawer = binding.drawerLayout
+
+        drawerToggle = ActionBarDrawerToggle(this, drawer, toolbar,  R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+        drawer.addDrawerListener(drawerToggle)
+        drawerToggle.syncState()
     }
 
     private fun initRecycler(){
@@ -189,6 +207,7 @@ class UnsplashActivity : AppCompatActivity(){
         when(item?.itemId){
             R.id.main_menu_giphy -> {navigator.showGifActivity(this)}
             R.id.main_menu_search -> {navigator.showUnsplashSearchActivity(this, true)}
+
         }
         return true
     }
